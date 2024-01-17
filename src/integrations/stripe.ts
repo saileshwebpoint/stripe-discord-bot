@@ -43,7 +43,7 @@ export const resolveCustomerIdFromEmail = async (email: string) => {
           )
         ).json()
     );
-console.log(customers)
+    console.log(customers);
     customerData = customers.data[0];
   }
 
@@ -83,6 +83,42 @@ export const findActiveSubscriptions = (subscriptions: any[]) => {
       sub.status === "trialing" ||
       (sub.cancel_at && sub.current_period_end > Date.now() / 1000)
   );
+};
+
+const Monthly_Advanced_Individual = "price_1LxFKUH6LucJupvi3hRWTHeW";
+const Monthly_Advanced_Individual_Realvision = "price_1OSYUGH6LucJupviOZfu5yxR";
+const Monthly_Advanced_LFA = "price_1LxFKUH6LucJupviIjvEiFwd";
+const Monthly_Advanced_LFA_Realvision = "price_1OSYSqH6LucJupvilE9ctpIV";
+const Yearly_Advanced_Individual = "price_1LxFKUH6LucJupvitjmkWPfs";
+const Yearly_Advanced_Individual_Realvision = "price_1OSYUlH6LucJupviPFzINW5T";
+const Yearly_Advanced_LFA = "price_1LxFKUH6LucJupviFxxkVvLH";
+const Yearly_Advanced_LFA_Realvision = "price_1OSYSYH6LucJupvi8yY3lcap";
+const Yearly_Advanced_Institutional = "price_1LxFKUH6LucJupviCe7o5dSG";
+const Yearly_Direct_Institutional = "price_1Nq7PfH6LucJupviQhKVmqEQ";
+const Yearly_Direct_Institutional_Realvision = "price_1OSYetH6LucJupviZN7mSrLB";
+const seekingAlphaMembership = "price_1MjLEtH6LucJupvieNsbKAmB";
+const friendsAndFamilyMembership = "price_1MjLKKH6LucJupvivY03t1z6";
+const ioFundMembership = "price_1MjLKhH6LucJupvikG6Bikb2";
+
+const ADVANCED_PLAN_IDS = [
+  Monthly_Advanced_Individual,
+  Monthly_Advanced_Individual_Realvision,
+  Monthly_Advanced_LFA,
+  Monthly_Advanced_LFA_Realvision,
+  Yearly_Advanced_Individual,
+  Yearly_Advanced_Individual_Realvision,
+  Yearly_Advanced_LFA,
+  Yearly_Advanced_LFA_Realvision,
+  Yearly_Advanced_Institutional,
+  Yearly_Direct_Institutional,
+  Yearly_Direct_Institutional_Realvision,
+  seekingAlphaMembership,
+  friendsAndFamilyMembership,
+  ioFundMembership,
+];
+
+export const filterAdvancedSubscriber = (subscriptions: any[]) => {
+  return subscriptions.some((sub) => ADVANCED_PLAN_IDS.includes(sub.plan.id));
 };
 
 /**

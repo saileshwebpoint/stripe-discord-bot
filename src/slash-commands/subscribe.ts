@@ -1,5 +1,4 @@
 import { SlashCommandRunFunction } from "../handlers/commands";
-import fetch from "node-fetch";
 import { errorEmbed, successEmbed } from "../util";
 import { DiscordCustomer, Postgres } from "../database";
 import {
@@ -10,10 +9,9 @@ import {
   TextChannel,
 } from "discord.js";
 import {
+  filterAdvancedSubscriber,
   findActiveSubscriptions,
   findSubscriptionsFromCustomerId,
-  getCustomerPayments,
-  getLifetimePaymentDate,
   resolveCustomerIdFromEmail,
 } from "../integrations/stripe";
 import { Not } from "typeorm";
@@ -129,6 +127,50 @@ export const run: SlashCommandRunFunction = async (interaction) => {
         `You do not have an active subscription. Please buy one at ${process.env.STRIPE_PAYMENT_LINK} to access the server.`
       ).embeds,
       ephemeral: true,
+    });
+  }
+
+  const isAdvancedSubscriber = filterAdvancedSubscriber(activeSubscriptions);
+
+  console.log({ activeSubscription: activeSubscriptions[0] });
+  console.log({ isAdvancedSubscriber });
+  if (!isAdvancedSubscriber) {
+    const customer: Partial<DiscordCustomer> = {
+      hadActiveSubscription: false,
+      // @ts-ignore
+      firstReminderSentDayCount: null,
+      email,
+      discordUserId: interaction.user.id,
+    };
+
+    if (userCustomer)
+      await Postgres.getRepository(DiscordCustomer).update(
+        userCustomer.id,
+        customer
+      );
+    else await Postgres.getRepository(DiscordCustomer).insert(customer);
+
+    const member = await interaction.guild?.members
+      .fetch(interaction.user.id)
+      ?.catch(() => {});
+    await (member as GuildMember)?.roles
+      .remove(process.env.PAYING_ROLE_ID)
+      ?.catch(() => {});
+
+    (
+      member?.guild.channels.cache.get(
+        process.env.LOGS_CHANNEL_ID
+      ) as TextChannel
+    ).send(
+      `:arrow_upper_right: **${member?.user?.tag || "Unknown#0000"}** (${
+        customer.discordUserId
+      }, <@${customer.discordUserId}>) has been linked to \`${
+        customer.email
+      }\`.`
+    );
+    return void interaction.reply({
+      ephemeral: true,
+      embeds: errorEmbed(`This account does not have advanced access!`).embeds,
     });
   }
 
