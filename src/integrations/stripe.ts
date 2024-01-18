@@ -100,6 +100,20 @@ const seekingAlphaMembership = "price_1MjLEtH6LucJupvieNsbKAmB";
 const friendsAndFamilyMembership = "price_1MjLKKH6LucJupvivY03t1z6";
 const ioFundMembership = "price_1MjLKhH6LucJupvikG6Bikb2";
 
+const oldPrices = [
+  "price_1Ld04rH6LucJupvizT9yPACK", // Individual Investory (Annual)
+  "premium-annual-membership-499-12month", // Individual Investory (Annual) - Advanced
+  "premium-membership-499-12month", // Premium Membership
+  "price_1Ld05UH6LucJupvis7aEUQYR", // Individual Investor (Monthly)
+  "premium-monthly-membership-65-30day", // Individual Investor (Monthly) - Advanced
+  "price_1H0IyGH6LucJupviXWMp39Bt", // Price for Free Annual Membership
+  "price_1JmjUrH6LucJupviaz2e3CK9", // LFA or RIA (Annual) $499
+  "price_1LczyxH6LucJupviB9AcIAni", // LFA or RIA (Annual) $799
+  "price_1JmjTWH6LucJupviok6FjZvy", // LFA or RIA (Monthly) $65 - Advanced
+  "price_1Ld01sH6LucJupvieKal9nIk", // LFA or RIA (Monthly) $99
+  "price_1JmTZkH6LucJupviLVhZEMBo", // Institutional Investor (Annual) $7500
+];
+
 const ADVANCED_PLAN_IDS = [
   Monthly_Advanced_Individual,
   Monthly_Advanced_Individual_Realvision,
@@ -115,6 +129,7 @@ const ADVANCED_PLAN_IDS = [
   seekingAlphaMembership,
   friendsAndFamilyMembership,
   ioFundMembership,
+  ...oldPrices,
 ];
 
 export const filterAdvancedSubscriber = (subscriptions: any[]) => {
