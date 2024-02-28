@@ -10,6 +10,7 @@ import {
   getLifetimePaymentDate,
   resolveCustomerIdFromEmail,
 } from "../integrations/stripe";
+import { client } from "..";
 
 export const commands = [
   {
@@ -60,6 +61,12 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
   if (!isAdvancedSubscriber) {
     // remove role of IO Member here
+    const guild = client.guilds.cache.get(process.env.GUILD_ID!)!;
+    await guild.members.fetch();
+    const member = guild.members.cache.get(user.id);
+    console.log("Member: ", member);
+    member?.roles.remove(process.env.PAYING_ROLE_ID!);
+    console.log("Removed role");
     return void interaction.reply({
       ephemeral: true,
       embeds: errorEmbed(`This account does not have advanced access!`).embeds,
