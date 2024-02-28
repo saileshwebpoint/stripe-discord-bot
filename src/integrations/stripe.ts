@@ -183,14 +183,14 @@ export const getCustomerPayments = async (customerId: string) => {
  */
 export const getLifetimePaymentDate = (payments: any[]): null | number => {
   let lifetimeStartDate = null;
-  for (const payment of payments || []) {
-    for (const charge of payment.charges?.data || []) {
-      if (
-        charge.description.includes(process.env.LIFETIME_INVOICE_LABEL_KEYWORD)
-      ) {
-        lifetimeStartDate = charge.created * 1000;
-      }
-    }
-  }
+  // for (const payment of payments || []) {
+  //   for (const charge of payment.charges?.data || []) {
+  //     if (
+  //       charge.description.includes(process.env.LIFETIME_INVOICE_LABEL_KEYWORD)
+  //     ) {
+  //       lifetimeStartDate = charge.created * 1000;
+  //     }
+  //   }
+  // }
   return lifetimeStartDate;
 };

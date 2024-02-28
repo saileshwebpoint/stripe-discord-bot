@@ -59,6 +59,7 @@ export const run: SlashCommandRunFunction = async (interaction) => {
   console.log({ isAdvancedSubscriber });
 
   if (!isAdvancedSubscriber) {
+    // remove role of IO Member here
     return void interaction.reply({
       ephemeral: true,
       embeds: errorEmbed(`This account does not have advanced access!`).embeds,
