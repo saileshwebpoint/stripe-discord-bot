@@ -49,7 +49,7 @@ const makeMemberExpire = async (
     firstReminderSentDayCount: null,
   });
   member?.roles.remove(process.env.PAYING_ROLE_ID!);
-  member?.roles.remove(process.env.MEMBER_ROLE_ID!);
+  // member?.roles.remove(process.env.MEMBER_ROLE_ID!);
   // if (process.env.LIFETIME_PAYING_ROLE_ID) member?.roles.remove(process.env.LIFETIME_PAYING_ROLE_ID);
   (guild.channels.cache.get(process.env.LOGS_CHANNEL_ID) as TextChannel).send(
     `:arrow_lower_right: **${member?.user?.tag || "Unknown#0000"}** (${
