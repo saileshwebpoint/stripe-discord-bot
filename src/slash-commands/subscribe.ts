@@ -132,8 +132,6 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
   const isAdvancedSubscriber = filterAdvancedSubscriber(activeSubscriptions);
 
-  console.log({ activeSubscription: activeSubscriptions[0] });
-  console.log({ isAdvancedSubscriber });
   if (!isAdvancedSubscriber) {
     const customer: Partial<DiscordCustomer> = {
       hadActiveSubscription: false,

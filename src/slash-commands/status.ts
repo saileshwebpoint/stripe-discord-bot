@@ -56,8 +56,6 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
   const subscriptions = await findSubscriptionsFromCustomerId(customerId);
   const isAdvancedSubscriber = filterAdvancedSubscriber(subscriptions);
-  console.log({ activeSubscription: subscriptions[0] });
-  console.log({ isAdvancedSubscriber });
 
   if (!isAdvancedSubscriber) {
     // remove role of IO Member here
@@ -66,7 +64,11 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     // const member = guild.members.cache.get(user.id);
     // console.log("Member: ", member);
     // member?.roles.remove(process.env.PAYING_ROLE_ID!);
-    // console.log("Removed role");
+    console.log(
+      discordCustomer.email,
+      " has no access, customerId",
+      customerId
+    );
     return void interaction.reply({
       ephemeral: true,
       embeds: errorEmbed(`This account does not have advanced access!`).embeds,
@@ -75,6 +77,7 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
   // const payments = await getCustomerPayments(customerId);
   // const lifetimePaymentDate = await getLifetimePaymentDate(payments);
+  console.log(discordCustomer.email, " has access, customerId", customerId);
 
   const embed = new EmbedBuilder()
     .setAuthor({

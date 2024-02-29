@@ -49,6 +49,7 @@ const makeMemberExpire = async (
     firstReminderSentDayCount: null,
   });
   member?.roles.remove(process.env.PAYING_ROLE_ID!);
+  member?.roles.remove(process.env.MEMBER_ROLE_ID!);
   // if (process.env.LIFETIME_PAYING_ROLE_ID) member?.roles.remove(process.env.LIFETIME_PAYING_ROLE_ID);
   (guild.channels.cache.get(process.env.LOGS_CHANNEL_ID) as TextChannel).send(
     `:arrow_lower_right: **${member?.user?.tag || "Unknown#0000"}** (${
@@ -118,32 +119,35 @@ export const run = async () => {
       continue;
     }
 
-    if (!customer.firstReminderSentDayCount) {
-      console.log(`[Daily Check] Sending first reminder to ${customer.email}`);
-      const member = guild.members.cache.get(customer.discordUserId);
-      member?.send({ embeds: [getExpiredEmbed(2)] }).catch(() => {});
-      await Postgres.getRepository(DiscordCustomer).update(customer.id, {
-        firstReminderSentDayCount: 2,
-      });
-      continue;
-    }
+    // if (!customer.firstReminderSentDayCount) {
+    //   console.log(`[Daily Check] Sending first reminder to ${customer.email}`);
+    //   const member = guild.members.cache.get(customer.discordUserId);
+    //   member?.send({ embeds: [getExpiredEmbed(2)] }).catch(() => {});
+    //   await Postgres.getRepository(DiscordCustomer).update(customer.id, {
+    //     firstReminderSentDayCount: 2,
+    //   });
+    //   continue;
+    // }
 
-    if (customer.firstReminderSentDayCount === 2) {
-      console.log(`[Daily Check] Sending second reminder to ${customer.email}`);
-      const member = guild.members.cache.get(customer.discordUserId);
-      member?.send({ embeds: [getExpiredEmbed(1)] }).catch(() => {});
-      await Postgres.getRepository(DiscordCustomer).update(customer.id, {
-        firstReminderSentDayCount: 1,
-      });
-      continue;
-    }
+    // if (customer.firstReminderSentDayCount === 2) {
+    //   console.log(`[Daily Check] Sending second reminder to ${customer.email}`);
+    //   const member = guild.members.cache.get(customer.discordUserId);
+    //   member?.send({ embeds: [getExpiredEmbed(1)] }).catch(() => {});
+    //   await Postgres.getRepository(DiscordCustomer).update(customer.id, {
+    //     firstReminderSentDayCount: 1,
+    //   });
+    //   continue;
+    // }
 
-    if (customer.firstReminderSentDayCount === 1) {
-      console.log(`[Daily Check] Sending third reminder to ${customer.email}`);
-      const member = guild.members.cache.get(customer.discordUserId);
-      member?.send({ embeds: [getExpiredEmbed(0)] }).catch(() => {});
-      makeMemberExpire(customer, member!, guild);
-      continue;
-    }
+    // if (customer.firstReminderSentDayCount === 1) {
+    // console.log(`[Daily Check] Sending third reminder to ${customer.email}`);
+    console.log(
+      `[Daily Check] expired subscription of ${customer.email}. Removing access`
+    );
+    const member = guild.members.cache.get(customer.discordUserId);
+    member?.send({ embeds: [getExpiredEmbed(0)] }).catch(() => {});
+    makeMemberExpire(customer, member!, guild);
+    continue;
+    // }
   }
 };
