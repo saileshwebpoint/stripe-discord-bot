@@ -8,44 +8,22 @@ const queue = new pQueue({ concurrency: 1, interval: 1000, intervalCap: 1 });
 export const resolveCustomerIdFromEmail = async (email: string) => {
   let customerData;
 
-  if (email.includes("+")) {
-    const endPart = email.split("+")[1];
-    const customers = await queue.add(
-      async () =>
-        await (
-          await fetch(
-            `https://api.stripe.com/v1/customers/search?query=email~'${endPart}'`,
-            {
-              headers: {
-                Authorization: `Bearer ${process.env.STRIPE_API_KEY}`,
-                "Stripe-Version": "2020-08-27",
-              },
-            }
-          )
-        ).json()
-    );
-    const matchingCustomers = customers.data.filter(
-      (c: any) => c.email === email
-    );
-    customerData = matchingCustomers[0];
-  } else {
-    const customers = await queue.add(
-      async () =>
-        await (
-          await fetch(
-            `https://api.stripe.com/v1/customers/search?query=email:'${email}'`,
-            {
-              headers: {
-                Authorization: `Bearer ${process.env.STRIPE_API_KEY}`,
-                "Stripe-Version": "2020-08-27",
-              },
-            }
-          )
-        ).json()
-    );
-    console.log(customers);
-    customerData = customers.data[0];
-  }
+  const customers = await queue.add(
+    async () =>
+      await (
+        await fetch(
+          `https://api.stripe.com/v1/customers/search?query=email:'${email}'`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.STRIPE_API_KEY}`,
+              "Stripe-Version": "2020-08-27",
+            },
+          }
+        )
+      ).json()
+  );
+  console.log(customers);
+  customerData = customers.data[0];
 
   return customerData?.id;
 };
