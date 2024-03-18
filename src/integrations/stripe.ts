@@ -22,7 +22,6 @@ export const resolveCustomerIdFromEmail = async (email: string) => {
         )
       ).json()
   );
-  console.log(customers);
   customerData = customers.data[0];
 
   return customerData?.id;
