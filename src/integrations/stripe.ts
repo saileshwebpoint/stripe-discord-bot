@@ -7,13 +7,15 @@ const queue = new pQueue({ concurrency: 1, interval: 1000, intervalCap: 1 });
  */
 export const resolveCustomerIdFromEmail = async (email: string) => {
   let customerData;
-
+  console.log(email.replaceAll("+","%2B"));
+  console.log(`https://api.stripe.com/v1/customers/search?query=email:'${email.replaceAll("+","%2B")}'`);
   const customers = await queue.add(
     async () =>
       await (
         await fetch(
-          `https://api.stripe.com/v1/customers/search?query=email:'${email}'`,
+          `https://api.stripe.com/v1/customers/search?query=email:"${email.replaceAll("+", "%2B")}"`,
           {
+	    method: "GET",
             headers: {
               Authorization: `Bearer ${process.env.STRIPE_API_KEY}`,
               "Stripe-Version": "2020-08-27",
@@ -22,6 +24,7 @@ export const resolveCustomerIdFromEmail = async (email: string) => {
         )
       ).json()
   );
+  console.log("customers: ", customers);
   customerData = customers.data[0];
 
   return customerData?.id;
