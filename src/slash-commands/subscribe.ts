@@ -42,14 +42,11 @@ export const run: SlashCommandRunFunction = async (interaction) => {
   const email = (
     interaction.options as CommandInteractionOptionResolver
   ).getString("email")!;
-  console.log("email to check subscription: ", email);
   const userCustomer = await Postgres.getRepository(DiscordCustomer).findOne({
     where: {
       discordUserId: interaction.user.id,
     },
   });
-
-  console.log("userCustomer in db", userCustomer);
 
   if (userCustomer && !email) {
     return void interaction.reply({
@@ -101,8 +98,6 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     },
   });
 
-  console.log("existingEmailCustomer", existingEmailCustomer);
-
   if (existingEmailCustomer) {
     return void interaction.reply({
       embeds: errorEmbed(
@@ -112,9 +107,7 @@ export const run: SlashCommandRunFunction = async (interaction) => {
     });
   }
 
-  console.log("customer id reolve from stripe");
   const customerId = await resolveCustomerIdFromEmail(email);
-  console.log("customerId", customerId);
   if (!customerId)
     return void interaction.reply({
       embeds: errorEmbed(
@@ -125,8 +118,6 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
   const subscriptions = await findSubscriptionsFromCustomerId(customerId);
   const activeSubscriptions = findActiveSubscriptions(subscriptions);
-  console.log("subscriptions: ", JSON.stringify(subscriptions));
-  console.log("active: ", JSON.stringify(activeSubscriptions));
   if (!(activeSubscriptions.length > 0)) {
     return void interaction.reply({
       embeds: errorEmbed(
@@ -138,7 +129,6 @@ export const run: SlashCommandRunFunction = async (interaction) => {
 
   const isAdvancedSubscriber = filterAdvancedSubscriber(activeSubscriptions);
 
-console.log("isAdvancedSubscriber", isAdvancedSubscriber);
   if (!isAdvancedSubscriber) {
     const customer: Partial<DiscordCustomer> = {
       hadActiveSubscription: false,
