@@ -80,6 +80,14 @@ const Yearly_Direct_Institutional_Realvision = "price_1OSYetH6LucJupviZN7mSrLB";
 const seekingAlphaMembership = "price_1MjLEtH6LucJupvieNsbKAmB";
 const friendsAndFamilyMembership = "price_1MjLKKH6LucJupvivY03t1z6";
 const ioFundMembership = "price_1MjLKhH6LucJupvikG6Bikb2";
+const Monthly_Advanced_Individual_Realvision_New = "price_1QUjrbH6LucJupvioRs74Bum";
+const Monthly_Advanced_LFA_Realvision_New = "price_1QUjsWH6LucJupviD8ZJ7CQA";
+const Monthly_Advanced_LFA_New = "price_1QInPbH6LucJupvi5zHREaFd";
+const Monthly_Advanced_Individual_New = "price_1QInNAH6LucJupvifMUvR33d";
+const Yearly_Advanced_Individual_New = "price_1QIn6gH6LucJupviNw2H3Eus"
+const Yearly_Advanced_LFA_New = "price_1QInOqH6LucJupvicgJxulPG"
+const Yearly_Advanced_Individual_Realvision_New = "price_1QUjqoH6LucJupviq11BdURB"
+const Yearly_Advanced_LFA_Realvision_New = "price_1QUjs2H6LucJupviHuJM1bNp";
 
 const oldPrices = [
   "price_1Ld04rH6LucJupvizT9yPACK", // Individual Investory (Annual)
@@ -111,6 +119,14 @@ const ADVANCED_PLAN_IDS = [
   friendsAndFamilyMembership,
   ioFundMembership,
   ...oldPrices,
+  Yearly_Advanced_Individual_New,
+  Yearly_Advanced_LFA_New,
+  Yearly_Advanced_Individual_Realvision_New,
+  Yearly_Advanced_LFA_Realvision_New,
+  Monthly_Advanced_Individual_Realvision_New,
+  Monthly_Advanced_LFA_Realvision_New,
+  Monthly_Advanced_LFA_New,
+  Monthly_Advanced_Individual_New
 ];
 
 export const filterAdvancedSubscriber = (subscriptions: any[]) => {
